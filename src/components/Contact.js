@@ -20,48 +20,59 @@ const contactInfo = [
 
 const Contact = () => {
   const [mailData, setMailData] = useState({
-    name: "",
-    email: "",
-    message: "",
+    your_name: "",      // name maydoni EmailJS da this way bo'lishi kerak
+    your_email: "",     // email maydoni
     subject: "",
+    message: "",
   });
-  const { name, email, subject, message } = mailData;
+  const { your_name, your_email, subject, message } = mailData;
   const [error, setError] = useState(false);
   const [success, setSuccess] = useState(false);
+
   const onChange = (e) => {
     setMailData({ ...mailData, [e.target.name]: e.target.value });
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
+
     if (
-      name.length === 0 ||
-      email.length === 0 ||
+      your_name.length === 0 ||
+      your_email.length === 0 ||
       message.length === 0 ||
       subject.length === 0
     ) {
       setError(true);
-    } else {
-      emailjs
-        .send(
-          "service_seruhwu", // service id
-          "template_21aw58z", // template id
-          mailData,
-          "Q3pccdLZhU-mZT7tQ" // public api
-        )
-        .then(
-          (response) => {
-            setError(false);
-            setSuccess(true);
-            setTimeout(() => {
-              setSuccess(false);
-            }, 3000);
-            setMailData({ name: "", email: "", message: "", subject: "" });
-          },
-          (err) => {
-            console.log(err.text);
-          }
-        );
+      return;
     }
+
+    emailjs
+      .send(
+        "service_8ng542b",      // O'zing EmailJS dashboardda olgan service ID ni yozasan
+        "template_tnytsn6",     // O'zing EmailJS dashboardda olgan template ID ni yozasan
+        mailData,
+        "VcplLT9bGY_aJ22wt"       // O'zing EmailJS dashboardda olgan public API key ni yozasan
+      )
+      .then(
+        (response) => {
+          setError(false);
+          setSuccess(true);
+          setTimeout(() => {
+            setSuccess(false);
+          }, 3000);
+          setMailData({
+            your_name: "",
+            your_email: "",
+            subject: "",
+            message: "",
+          });
+        },
+        (err) => {
+          console.error("EmailJS Error:", err);
+          setError(true);
+          setSuccess(false);
+        }
+      );
   };
 
   return (
@@ -78,19 +89,19 @@ const Contact = () => {
               <p className="lead">
                 Our friendly team would love to hear from you.
               </p>
-              <form id="contact-form" onSubmit={(e) => onSubmit(e)}>
+              <form id="contact-form" onSubmit={onSubmit}>
                 <div className="row gx-3 gy-4">
                   <div className="col-md-6">
                     <div className="form-group">
                       <label className="form-label">First name</label>
                       <input
-                        name="name"
-                        onChange={(e) => onChange(e)}
-                        value={name}
+                        name="your_name"
+                        onChange={onChange}
+                        value={your_name}
                         id="name"
                         placeholder="Name *"
                         className={`form-control ${
-                          error ? (name.length !== 0 ? "" : "invalid") : ""
+                          error ? (your_name.length !== 0 ? "" : "invalid") : ""
                         }`}
                         type="text"
                       />
@@ -100,13 +111,13 @@ const Contact = () => {
                     <div className="form-group">
                       <label className="form-label">Your Email</label>
                       <input
-                        name="email"
-                        onChange={(e) => onChange(e)}
-                        value={email}
+                        name="your_email"
+                        onChange={onChange}
+                        value={your_email}
                         id="email"
                         placeholder="Email *"
                         className={`form-control ${
-                          error ? (email.length !== 0 ? "" : "invalid") : ""
+                          error ? (your_email.length !== 0 ? "" : "invalid") : ""
                         }`}
                         type="email"
                       />
@@ -117,7 +128,7 @@ const Contact = () => {
                       <label className="form-label">Subject</label>
                       <input
                         name="subject"
-                        onChange={(e) => onChange(e)}
+                        onChange={onChange}
                         value={subject}
                         id="subject"
                         placeholder="Subject *"
@@ -133,7 +144,7 @@ const Contact = () => {
                       <label className="form-label">Your message</label>
                       <textarea
                         name="message"
-                        onChange={(e) => onChange(e)}
+                        onChange={onChange}
                         value={message}
                         id="message"
                         placeholder="Your message *"
@@ -158,7 +169,6 @@ const Contact = () => {
                         type="submit"
                         value="Send"
                       >
-                        {" "}
                         Send Message
                       </button>
                     </div>
@@ -190,4 +200,5 @@ const Contact = () => {
     </section>
   );
 };
+
 export default Contact;
