@@ -7,7 +7,7 @@ const Header = () => {
         <div className="container">
           {/* Brand */}
           <a className="navbar-brand" href="#">
-            <img src="assets/img/file.svg" width={149} height={35} className="svg" alt="image" />
+            <img src="assets/img/logo.svg" width={149} height={35} className="svg" alt="image" />
           </a>
           {/* / */}
           <Accordion>
